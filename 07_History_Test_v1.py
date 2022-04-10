@@ -25,6 +25,8 @@ else:
     print()
     print("*** The Full List ***")
     print(all_calculations)
+    print()
+
 
     # Print item starting at the End of the list
     if len(all_calculations) >= 3:
@@ -34,5 +36,5 @@ else:
 
     else:
         print("*** Items from Most Recent to Oldest ****")
-        for item in all_calculations:
-            print(all_calculations[len(all_calculations) - all_calculations.index()])
+        for item in range(len(all_calculations)):
+            print(all_calculations[len(all_calculations) - item - 1])

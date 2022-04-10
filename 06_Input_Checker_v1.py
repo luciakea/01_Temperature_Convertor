@@ -8,12 +8,13 @@ def temp_check(low):
             response = float(input("Enter a number:  "))
 
             if response < low:
-                print("Too cold!!")
+                print("Too cold")
             else:
                 return response
 
         except ValueError:
-                print("please enter a number")
+            print("please enter a number")
+
 
 # main routine
 # run this code twice (for two valid responses in test plan)
