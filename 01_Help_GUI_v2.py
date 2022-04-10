@@ -21,6 +21,9 @@ class Converter:
 
     def help(self):
         get_help = Help()
+
+        # closes converter window...
+        root.withdraw()
         get_help.help_text.configure(text="Help goes here")
 
 class Help:
@@ -46,6 +49,7 @@ class Help:
         self.dismiss_button.grid(row=2, padx=10)
 
     def close_help(self):
+        root.deiconify()
         self.help_box.destroy()
 
 
