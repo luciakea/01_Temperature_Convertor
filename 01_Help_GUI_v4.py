@@ -1,6 +1,5 @@
 from tkinter import *
 from functools import partial  # to prevent unwanted windows
-import random
 
 
 class Converter:
@@ -24,7 +23,7 @@ class Converter:
         self.help_button.grid(row=1)
 
     def help(self):
-        get_help = Help(self)
+        Help(self)
         # get_help.help_text.configure(text ="Help text goes here")
 
 
@@ -39,7 +38,7 @@ class Help:
         self.help_box = Toplevel()
 
         # if cross at top right of help box is pressed, close help box and enable help button in convertor GUI
-        self.help_box.protocol('WM_DELETE_WINDOW', partial(self.close_help,partner))
+        self.help_box.protocol('WM_DELETE_WINDOW', partial(self.close_help, partner))
 
         # set up GUI frame
         self.help_frame = Frame(self.help_box, bg=background)
