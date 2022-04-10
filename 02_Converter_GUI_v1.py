@@ -1,6 +1,5 @@
 from tkinter import *
 from functools import partial  # to prevent unwanted windows
-import random
 
 
 class Converter:
@@ -64,8 +63,12 @@ class Converter:
         self.calc_hist_button.grid(row=0, column=0)
 
         self.help_button = Button(self.hist_help_frame, font="Arial 12 bold",
-                                  text="Help", width=5)
+                                  text="Help", width=5, command=self.help)
         self.help_button.grid(row=0, column=1)
+
+    def help(self):
+        Help(self)
+        # get_help.help_text.configure(text ="Help text goes here")
 
     def temp_convert(self, low):
         print(low)
@@ -84,16 +87,16 @@ class Converter:
             # convert from C to F
             if low == -273 and to_convert >= low:
                 fahrenheit = (to_convert * 9 / 5) + 32
-                to_convert = self.round_it(to_convert)
-                fahrenheit = self.round_it(fahrenheit)
+                to_convert = self.round_item(to_convert)
+                fahrenheit = self.round_item(fahrenheit)
                 answer = "{} degrees C is {} degrees F".format(to_convert, fahrenheit)
 
             # check and convert to centigrade
             elif low == -459 and to_convert >= low:
-                celsius = (to_convert - 32) + 5 / 9
-                to_convert = self.round_it(to_convert)
-                celsius = self.round_it(celsius)
-                answer = "{} degrees C is {} degrees F".format(to_convert, celsius)
+                celsius = (to_convert - 32) * 5 / 9
+                to_convert = self.round_item(to_convert)
+                celsius = self.round_item(celsius)
+                answer = "{} degrees F is {} degrees C".format(to_convert, celsius)
 
             else:
                 # input is invalid (too cold)!!
@@ -118,13 +121,52 @@ class Converter:
             self.converted_label.configure(text="Enter a number!!", fg="red")
             self.to_convert_entry.configure(bg=error)
 
-    def round_it(self, to_round):
+    @staticmethod
+    def round_item(to_round):
         if to_round % 1 == 0:
             rounded = int(to_round)
         else:
             rounded = round(to_round, 1)
 
         return rounded
+
+
+class Help:
+    def __init__(self, partner):
+        background = "Orange"
+
+        # disable help button
+        partner.help_button.config(state=DISABLED)
+
+        # set up child window (ie: help box)
+        self.help_box = Toplevel()
+
+        # if cross at top right of help box is pressed, close help box and enable help button in convertor GUI
+        self.help_box.protocol('WM_DELETE_WINDOW', partial(self.close_help, partner))
+
+        # set up GUI frame
+        self.help_frame = Frame(self.help_box, bg=background)
+        self.help_frame.grid()
+
+        # set up 'help' heading (row 0)
+        self.how_heading = Label(self.help_frame, text="Help / Instructions",
+                                 font="arial 14 bold", bg=background)
+        self.how_heading.grid(row=0)
+
+        # Help text (label, row 1)
+        self.help_text = Label(self.help_frame, text="",
+                               justify=LEFT, width=40, bg=background)
+        self.help_text.grid(column=0, row=1)
+
+        # Dismiss button (row2)
+        self.dismiss_btn = Button(self.help_frame, text="Dismiss", width=10, bg="orange", font="arial 10 bold",
+                                  command=partial(self.close_help, partner))
+        self.dismiss_btn.grid(row=2, pady=10)
+
+    def close_help(self, partner):
+        # Put help button back to normal...
+        partner.help_button.config(state=NORMAL)
+        self.help_box.destroy()
 
 
 # Main Routine
